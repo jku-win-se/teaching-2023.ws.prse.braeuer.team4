@@ -1,0 +1,9 @@
+name: Hello World
+run-name: ${{ github.actor }} says Hello World
+on: [push]
+jobs:
+  Hello-World:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Hello World"
+      - run: echo "Goodbye World"

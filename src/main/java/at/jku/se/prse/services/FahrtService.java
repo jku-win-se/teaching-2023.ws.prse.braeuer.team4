@@ -7,6 +7,6 @@ import java.util.List;
 public interface FahrtService {
 
     Fahrt save(Fahrt fahrt);
-
+    void delete(Fahrt fahrt);
     List<Fahrt> findAll();
 }

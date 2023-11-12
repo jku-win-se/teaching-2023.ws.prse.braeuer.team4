@@ -13,12 +13,14 @@ public class FahrtServiceImpl implements FahrtService {
 
     @Autowired
     FahrtRepository repository;
-
     @Override
     public Fahrt save(Fahrt fahrt) {
         return repository.save(fahrt);
     }
-
+    @Override
+    public void delete(Fahrt fahrt) {
+        repository.delete(fahrt);
+    }
     @Override
     public List<Fahrt> findAll() {
         return repository.findAll();

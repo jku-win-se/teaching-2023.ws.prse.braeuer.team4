@@ -58,6 +58,10 @@ public class AdministrationView {
         fahrtService.save(newFahrt);
         initFahrten();
     }
+    public void deleteFahrt(Fahrt fahrt) {
+        fahrtService.delete(fahrt);
+        initFahrten();
+    }
     public void rowEditFahrt(RowEditEvent<Fahrt> event) {
         fahrtService.save(event.getObject());
         FacesMessage msg = new FacesMessage("Edited", "Fahrt " + event.getObject().getId());

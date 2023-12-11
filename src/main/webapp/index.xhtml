@@ -119,11 +119,12 @@
                     <p:outputLabel value="Stehzeit" />
                     <p:datePicker value="#{administrationView.newFahrt.timeStood}" timeOnly="true"/>
                     <p:outputLabel value="Wiederholung" />
-                    <p:selectOneRadio id="wiederholungInp" value="#{administrationView.newFahrt.repetition}">
+                    <p:selectOneMenu id="wiederholungInp" value="#{administrationView.newFahrt.repetition}">
+                        <f:selectItem itemLabel="Keine Wiederholung" noSelectionOption="true" />
                         <f:selectItem itemLabel="wöchentlich" itemValue="WOECHENTLICH" />
                         <f:selectItem itemLabel="monatlich" itemValue="MONATLICH" />
                         <f:selectItem itemLabel="jährlich" itemValue="JAEHRLICH" />
-                    </p:selectOneRadio>
+                    </p:selectOneMenu>
                     <p:outputLabel value="Anzahl der Wiederholungen" />
                     <p:inputNumber minValue="0" value="#{administrationView.newFahrt.numberOfRepetitions}" default="0" required="false"/>
                 </p:panelGrid>

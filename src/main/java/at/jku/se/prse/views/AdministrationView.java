@@ -57,12 +57,12 @@ public class AdministrationView {
     }
 
     public void saveNewFahrt() {
-        //Issue #34
-        if(newFahrt.getArrTime()!=null && newFahrt.getDepTime()!=null && newFahrt.getTimeStood()!=null && newFahrt.getRiddenKM()!=null) {
+        //Issue #23
+        if (newFahrt.getArrTime() != null && newFahrt.getDepTime() != null && newFahrt.getTimeStood() != null && newFahrt.getRiddenKM() != null) {
             newFahrt.setAverageSpeed(newFahrt.getRiddenKM() / aktiveFahrzeit(newFahrt));
         }
         else newFahrt.setAverageSpeed(0.0);
-        //End Issue #34
+        //End Issue #23
 
         fahrtService.save(newFahrt);
 
@@ -162,8 +162,8 @@ public class AdministrationView {
         initFahrten();
     }
 
-    //Issue #34
-    public double aktiveFahrzeit(Fahrt newFahrt){
+    //Issue #23
+    public static double aktiveFahrzeit(Fahrt newFahrt){
         int arrMinutes = newFahrt.getArrTime().getHour()*60 + newFahrt.getArrTime().getMinute();
         int depMinutes = newFahrt.getDepTime().getHour()*60 + newFahrt.getDepTime().getMinute();
         int stoodMinutes = newFahrt.getTimeStood().getHour()*60 + newFahrt.getTimeStood().getMinute();
@@ -173,4 +173,13 @@ public class AdministrationView {
         double time = (arrTime - depTime - stoodTime) / 60.0;
         return time;
     }
+
+    public static Double averageSpeed(Fahrt newFahrt){
+        if (newFahrt.getArrTime() != null && newFahrt.getDepTime() != null && newFahrt.getTimeStood() != null && newFahrt.getRiddenKM() != null) {
+            newFahrt.setAverageSpeed(newFahrt.getRiddenKM() / aktiveFahrzeit(newFahrt));
+        }
+        else newFahrt.setAverageSpeed(0.0);
+        return newFahrt.getAverageSpeed();
+    }
+
 }

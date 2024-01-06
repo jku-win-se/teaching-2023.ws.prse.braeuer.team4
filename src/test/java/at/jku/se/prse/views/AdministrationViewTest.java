@@ -10,6 +10,61 @@ import java.time.LocalTime;
 import static org.junit.jupiter.api.Assertions.*;
 
 class AdministrationViewTest {
+
+    // Start Durchschnittsgeschwindigkeitn bzw. Aktive Fahrzeit
+    @Test
+    public void testAktiveFahrzeit(){           //ohne Stehzeit
+        Fahrt fahrt = new Fahrt();
+        fahrt.setDate(LocalDate.now());
+        fahrt.setDepTime(LocalTime.now().minusHours(2));
+        fahrt.setArrTime(LocalTime.now());
+        fahrt.setRiddenKM(5);
+        assertEquals(2, AdministrationView.aktiveFahrzeit(fahrt));
+    }
+
+    @Test
+    public void testAktiveFahrzeitStehzeit(){   //mit Stehzeit
+        Fahrt fahrt = new Fahrt();
+        fahrt.setDate(LocalDate.now());
+        fahrt.setDepTime(LocalTime.now().minusHours(2));
+        fahrt.setArrTime(LocalTime.now());
+        fahrt.setRiddenKM(5);
+        fahrt.setTimeStood(LocalTime.of(1,0));
+        assertEquals(1, AdministrationView.aktiveFahrzeit(fahrt));
+    }
+
+    @Test
+    public void testDurchschnittsgeschwindigkeit(){ //alle Daten sind angegeben
+        Fahrt fahrt = new Fahrt();
+        fahrt.setDate(LocalDate.now());
+        fahrt.setDepTime(LocalTime.now().minusHours(2));
+        fahrt.setArrTime(LocalTime.now());
+        fahrt.setRiddenKM(60);
+        fahrt.setTimeStood(LocalTime.of(1,0));
+        assertEquals(60, AdministrationView.averageSpeed(fahrt));
+    }
+
+    @Test
+    public void testDurchschnittsgeschwindigkeitZero(){ //Ankunftszeit ist nicht angegeben
+        Fahrt fahrt = new Fahrt();
+        fahrt.setDate(LocalDate.now());
+        fahrt.setDepTime(LocalTime.now().minusHours(2));
+        fahrt.setRiddenKM(60);
+        fahrt.setTimeStood(LocalTime.of(1,0));
+        assertEquals(0, AdministrationView.averageSpeed(fahrt));
+    }
+
+    @Test
+    public void testDurchschnittsgeschwindigkeitStehzeit(){ //Stehzeit ist nicht angegeben
+        Fahrt fahrt = new Fahrt();
+        fahrt.setDate(LocalDate.now());
+        fahrt.setDepTime(LocalTime.now().minusHours(2));
+        fahrt.setArrTime(LocalTime.now());
+        fahrt.setRiddenKM(60);
+        assertEquals(30, AdministrationView.averageSpeed(fahrt));
+    }
+
+    // Start Status Tests
     @Test
     public void testGetStatusAbsolviert1(){
         Fahrt fahrt = new Fahrt();
@@ -54,4 +109,5 @@ class AdministrationViewTest {
         fahrt.setArrTime(LocalTime.now().plusMinutes(4));
         assertEquals(Status.ZUKUENFTIG, fahrt.getStatus());
     }
+    // End Status Tests
 }

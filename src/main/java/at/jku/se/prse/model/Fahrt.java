@@ -87,7 +87,7 @@ public class Fahrt {
     public int hashCode() {
         return id;
     }
-
+    //test
     //#7
     public Status getStatus() {
         if(this.date == null || this.depTime == null || this.arrTime == null) return Status.NICHT_DEFINIERT;

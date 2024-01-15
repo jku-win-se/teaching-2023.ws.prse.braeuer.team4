@@ -28,10 +28,14 @@
                         <p:column style="text-align: center;" headerText="Status" filterBy="#{fahrt.getStatus().label}" sortBy="#{fahrt.getStatus().label}">
                             <p:outputLabel value="#{fahrt.getStatus().label}"/>
                         </p:column>
-                        <p:column headerText="Kennzeichen" style="text-align: center;" filterBy="#{fahrt.carPlate}" sortBy="#{fahrt.carPlate}">
+                        <p:column headerText="Kennzeichen" style="text-align: center;" filterBy="#{fahrt.fahrzeug.carPlate}" sortBy="#{fahrt.fahrzeug.carPlate}">
                             <p:cellEditor>
-                                <f:facet name="output"><p:outputLabel value="#{fahrt.carPlate}"/></f:facet>
-                                <f:facet name="input"><p:inputText style="width: 100%" value="#{fahrt.carPlate}"/></f:facet>
+                                <f:facet name="output"><p:outputLabel value="#{fahrt.fahrzeug.carPlate}"/></f:facet>
+                                <f:facet name="input">
+                                    <p:selectOneMenu style="width: 100%" value="#{fahrt.fahrzeug}" converter="omnifaces.SelectItemsIndexConverter">
+                                        <f:selectItems var="fahrzeug" value="#{administrationView.fahrzeuge}" itemLabel="#{fahrzeug.carPlate}" itemValue="#{fahrzeug}"/>
+                                    </p:selectOneMenu>
+                                </f:facet>
                             </p:cellEditor>
                         </p:column>
 
@@ -58,13 +62,13 @@
                         <p:column headerText="Kilometer" style="text-align: center;" filterBy="#{fahrt.riddenKM}" sortBy="#{fahrt.riddenKM}">
                             <p:cellEditor>
                                 <f:facet name="output"><p:outputLabel value="#{fahrt.riddenKM}"/></f:facet>
-                                <f:facet name="input"><p:inputNumber minValue="0" value="#{fahrt.riddenKM}" label="Kennzeichen" inputStyle="width: 100%;"/></f:facet>
+                                <f:facet name="input"><p:inputNumber minValue="0" value="#{fahrt.riddenKM}" inputStyle="width: 100%;"/></f:facet>
                             </p:cellEditor>
                         </p:column>
                         <p:column headerText="Tachostand" style="text-align: center;" filterBy="#{fahrt.mileage}" sortBy="#{fahrt.mileage}">
                             <p:cellEditor>
                                 <f:facet name="output"><p:outputLabel value="#{fahrt.mileage}"/></f:facet>
-                                <f:facet name="input"><p:inputNumber minValue="0" value="#{fahrt.mileage}" label="Tachostand" inputStyle="width: 100%;"/></f:facet>
+                                <f:facet name="input"><p:inputNumber minValue="0" value="#{fahrt.mileage}" inputStyle="width: 100%;"/></f:facet>
                             </p:cellEditor>
                         </p:column>
                         <p:column headerText="Stehzeit" style="text-align: center; width:11rem;" filterBy="#{fahrt.timeStood}" sortBy="#{fahrt.timeStood}">
@@ -74,10 +78,7 @@
                             </p:cellEditor>
                         </p:column>
                         <p:column headerText="Durchschnittsgeschw." style="text-align: center; width:11rem;" filterBy="#{fahrt.averageSpeed}" sortBy="#{fahrt.averageSpeed}">
-                            <p:cellEditor>
-                                <f:facet name="output"><p:outputLabel value="#{fahrt.averageSpeed}"/></f:facet>
-                                <f:facet name="input"><p:inputNumber minValue="0.0" value="#{fahrt.averageSpeed}" label="Durchschnittsgeschw" inputStyle="width: 100%;"/></f:facet>
-                            </p:cellEditor>
+                            <p:outputLabel value="#{fahrt.averageSpeed}"/>
                         </p:column>
                         <p:column headerText="Kategorien" style="text-align: center;"  filterBy="#{fahrt.getCategoriesAsString()}" sortBy="#{fahrt.getCategoriesAsString()}">
                             <p:cellEditor>
@@ -102,8 +103,11 @@
                         </p:column>
                     </p:dataTable>
                     <p:divider/>
-                    <p:commandButton value="Neue Fahrt" onclick="PF('creationDialog').show()" styleClass="ui-priority-primary" icon="pi pi-plus"/>
-                    <p:commandButton value="Kategorien" onclick="PF('kategorieDialog').show()" styleClass="ui-priority-primary" icon="pi pi-tag"/>
+                    <p:panelGrid columns="3" style="width: 25%">
+                        <p:commandButton value="Neue Fahrt" onclick="PF('creationDialog').show()" styleClass="ui-priority-primary" icon="pi pi-plus"/>
+                        <p:commandButton value="Kategorien" onclick="PF('kategorieDialog').show()" styleClass="ui-priority-primary" icon="pi pi-tag"/>
+                        <p:commandButton value="Fahrzeuge" onclick="PF('fahrzeugDialog').show()" styleClass="ui-priority-primary" icon="pi pi-car"/>
+                    </p:panelGrid>
                 </h:form>
             </p:panel>
         </f:view>
@@ -112,28 +116,30 @@
             <h:form>
                 <p:panelGrid columns="2" style="width: 500px; text-align: center; vertical-align: middle; float:left; overflow-y: auto;height: 500px;">
                     <p:outputLabel value="KFZ-Kennzeichen"/>
-                    <p:inputText widgetVar="plateInp" value="#{administrationView.newFahrt.carPlate}" required="true" />
+                    <p:selectOneMenu widgetVar="plateInp" value="#{administrationView.newFahrt.fahrzeug}" required="true" converter="omnifaces.SelectItemsIndexConverter">
+                        <f:selectItems var="fahrzeug" value="#{administrationView.fahrzeuge}" itemLabel="#{fahrzeug.carPlate}" itemValue="#{fahrzeug}"/>
+                    </p:selectOneMenu>
                     <p:outputLabel value="Datum" />
-                    <p:datePicker widgetVar="dateInp" value="#{administrationView.newFahrt.date}" />
+                    <p:datePicker widgetVar="dateInp" value="#{administrationView.newFahrt.date}" required="true"/>
                     <p:outputLabel value="Abfahrtszeit" />
-                    <p:datePicker value="#{administrationView.newFahrt.depTime}" timeOnly="true"/>
+                    <p:datePicker value="#{administrationView.newFahrt.depTime}" timeOnly="true" required="true"/>
                     <p:outputLabel value="Ankunftszeit" />
-                    <p:datePicker value="#{administrationView.newFahrt.arrTime}" timeOnly="true"/>
+                    <p:datePicker value="#{administrationView.newFahrt.arrTime}" timeOnly="true" required="true"/>
                     <p:outputLabel value="Gefahrene Kilometer" />
                     <p:inputNumber minValue="0" value="#{administrationView.newFahrt.riddenKM}"/>
                     <p:outputLabel value="Tachostand" />
-                    <p:inputNumber minValue="0" value="#{administrationView.newFahrt.mileage}"/>
+                    <p:inputNumber widgetVar="mileageInp" value="#{administrationView.newFahrt.mileage}" />
                     <p:outputLabel value="Stehzeit" />
-                    <p:datePicker value="#{administrationView.newFahrt.timeStood}" timeOnly="true"/>
+                    <p:datePicker value="#{administrationView.newFahrt.timeStood}" timeOnly="true" required="true"/>
                     <p:outputLabel value="Wiederholung" />
-                    <p:selectOneMenu id="wiederholungInp" value="#{administrationView.newFahrt.repetition}">
+                    <p:selectOneMenu id="wiederholungInp" value="#{administrationView.newFahrt.repetition}" required="false">
                         <f:selectItem itemLabel="Keine Wiederholung" noSelectionOption="true" />
                         <f:selectItem itemLabel="wöchentlich" itemValue="WOECHENTLICH" />
                         <f:selectItem itemLabel="monatlich" itemValue="MONATLICH" />
                         <f:selectItem itemLabel="jährlich" itemValue="JAEHRLICH" />
                     </p:selectOneMenu>
                     <p:outputLabel value="Anzahl der Wiederholungen" />
-                    <p:inputNumber minValue="0" value="#{administrationView.newFahrt.numberOfRepetitions}" default="0" required="false"/>
+                    <p:inputNumber minValue="0" value="#{administrationView.newFahrt.numberOfRepetitions}" default="0" required="true"/>
                 </p:panelGrid>
                 <p:divider/>
                 <p:commandButton action="#{administrationView.saveNewFahrt()}" process="@form" update="@all" value="Speichern" styleClass="ui-button-plain" icon="pi pi-save" style="text-align: center"/>
@@ -162,6 +168,39 @@
                     </p:column>
                     <p:column style="width: 35px">
                         <p:commandButton action="#{administrationView.deleteKategorie(kat)}" update="@all" icon="pi pi-trash" style="background-color: red; border-color: red"/>
+                    </p:column>
+                </p:dataTable>
+            </h:form>
+        </p:dialog>
+        <p:dialog id="fahrzeugDialog" widgetVar="fahrzeugDialog" header="Fahrzeuge" closable="true" resizable="false" modal="true">
+            <h:form>
+                <p:commandButton action="#{administrationView.addNewFahrzeug()}" update="@form" value="Add" styleClass="ui-button-plain" icon="pi pi-plus"/>
+                <p:divider/>
+                <p:dataTable id="fahrzeuge" var="fz" value="#{administrationView.fahrzeuge}" editable="true" style="width: 800px;">
+
+                    <p:ajax event="rowEdit" listener="#{administrationView.onRowEditFz}" update=":form:msgs"/>
+                    <p:ajax event="rowEditCancel" listener="#{administrationView.onRowCancelFz}" update=":form:msgs"/>
+
+                    <p:column headerText="ID" style="text-align: center;">
+                        <p:outputLabel value="#{fz.id}"/>
+                    </p:column>
+                    <p:column headerText="Kennzeichen" style="text-align: center;" filterBy="#{fz.carPlate}" sortBy="#{fz.carPlate}">
+                        <p:cellEditor>
+                            <f:facet name="output"><p:outputLabel value="#{fz.carPlate}"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{fz.carPlate}"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Tachostand" style="text-align: center;" filterBy="#{fz.mileage}" sortBy="#{fz.mileage}">
+                        <p:cellEditor>
+                            <f:facet name="output"><p:outputLabel value="#{fz.mileage}"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{fz.mileage}"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column style="width: 35px">
+                        <p:rowEditor/>
+                    </p:column>
+                    <p:column style="width: 35px">
+                        <p:commandButton action="#{administrationView.deleteFahrzeug(fz)}" update="@all" icon="pi pi-trash" style="background-color: red; border-color: red"/>
                     </p:column>
                 </p:dataTable>
             </h:form>

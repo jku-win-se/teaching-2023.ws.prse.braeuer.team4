@@ -150,7 +150,16 @@ public class AdministrationView {
     }
 
     public void rowEditFahrt(RowEditEvent<Fahrt> event) {
-        fahrtService.save(event.getObject());
+        Fahrt f = event.getObject();
+        if (f.getArrTime() != null && f.getDepTime() != null && f.getTimeStood() != null && f.getRiddenKM() != null) {
+            f.setAverageSpeed(f.getRiddenKM() / aktiveFahrzeit(f));
+        }
+        else f.setAverageSpeed(0.0);
+
+        if(f.getMileage() != f.getFahrzeug().getMileage()) {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Tachostand unterschiedlich", "Tachostand unterscheidet sich zwischen Fahrzeug und Fahrt. Bitte überprüfen!"));
+        }
+        fahrtService.save(f);
         FacesMessage msg = new FacesMessage("Edited", "Fahrt " + event.getObject().getId());
         FacesContext.getCurrentInstance().addMessage(null, msg);
         initFahrten();

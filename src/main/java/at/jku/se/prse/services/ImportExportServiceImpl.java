@@ -1,6 +1,7 @@
 package at.jku.se.prse.services;
 
 import at.jku.se.prse.model.Fahrt;
+import at.jku.se.prse.model.Fahrzeug;
 import at.jku.se.prse.model.Kategorie;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
@@ -37,6 +38,9 @@ public class ImportExportServiceImpl implements ImportExportService{
     KategorieService katService;
 
     @Autowired
+    FahrzeugService fahrzeugService;
+
+    @Autowired
     DbxClientV2 dropboxClient;
 
     Map<String, Method> mapFahrt = new LinkedHashMap(){{
@@ -51,9 +55,16 @@ public class ImportExportServiceImpl implements ImportExportService{
                 if(method.getName().equalsIgnoreCase("get" + field.getName())) put(field.getName(), method);
     }};
 
+    Map<String, Method> mapFahrzeug = new LinkedHashMap<>(){{
+        for(Field field : Fahrzeug.class.getDeclaredFields())
+            for(Method method : Fahrzeug.class.getDeclaredMethods())
+                if(method.getName().equalsIgnoreCase("get" + field.getName())) put(field.getName(), method);
+    }};
+
     Map<String, Map<String, Method>> mapOfMaps =  new HashMap<>(){{
         put("Fahrten", mapFahrt);
         put("Kategorien", mapKategorie);
+        put("Fahrzeuge", mapFahrzeug);
     }};
 
     @Override
@@ -112,6 +123,26 @@ public class ImportExportServiceImpl implements ImportExportService{
                         String val = "";
                         try {
                             if (m.invoke(kat, null) != null) val = m.invoke(kat, null).toString();
+                        } catch (Exception e) {
+                            throw new RuntimeException("Something went wrong - please try again or contact our Tech-Support");
+                        }
+                        row.createCell(colIndex++).setCellValue(val);
+                    }
+                }
+            }
+            else if(entry.getKey().equals("Fahrzeuge")) {
+                XSSFRow header = sheet.createRow(rowNum++);
+                for(String s : entry.getValue().keySet()) {
+                    header.createCell(colIndex++).setCellValue(s);
+                }
+                for (Fahrzeug fz : fahrzeugService.findAll()) {
+                    XSSFRow row = sheet.createRow(rowNum++);
+                    colIndex = 0;
+
+                    for (Method m : entry.getValue().values()) {
+                        String val = "";
+                        try {
+                            if (m.invoke(fz, null) != null) val = m.invoke(fz, null).toString();
                         } catch (Exception e) {
                             throw new RuntimeException("Something went wrong - please try again or contact our Tech-Support");
                         }

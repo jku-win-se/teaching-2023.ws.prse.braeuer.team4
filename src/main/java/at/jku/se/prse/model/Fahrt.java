@@ -23,11 +23,6 @@ public class Fahrt {
     @Getter
     private Integer id;
 
-    @Column(length = 15)
-    @Getter
-    @Setter
-    private String carPlate;
-
     @Getter
     @Setter
     private LocalDate date;
@@ -69,6 +64,11 @@ public class Fahrt {
 
     @Getter
     @Setter
+    @ManyToOne
+    private Fahrzeug fahrzeug;
+
+    @Getter
+    @Setter
     @ManyToMany(targetEntity = Kategorie.class, fetch = FetchType.EAGER)
     private Set<Kategorie> categories = new HashSet<>();
 
@@ -97,5 +97,9 @@ public class Fahrt {
         if(dateComp < 0 || dateComp == 0 && arrTime.compareTo(LocalTime.now()) < 0) return Status.ABSOLVIERT;                             //absolviert falls Datum in der Vergangenheit, oder heutiges Datum und Ankunftszeit liegt in der Vergangenheit
 
         return Status.NICHT_DEFINIERT;
+    }
+
+    public String toString() {
+        return "Fahrt " + id;
     }
 }

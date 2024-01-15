@@ -3,10 +3,12 @@ package at.jku.se.prse.views;
 
 import at.jku.se.prse.enums.Wiederholung;
 import at.jku.se.prse.model.Fahrt;
+import at.jku.se.prse.model.Fahrzeug;
 import at.jku.se.prse.model.Kategorie;
-import at.jku.se.prse.services.KategorieService;
 import at.jku.se.prse.services.FahrtService;
+import at.jku.se.prse.services.FahrzeugService;
 import at.jku.se.prse.services.ImportExportService;
+import at.jku.se.prse.services.KategorieService;
 import com.dropbox.core.DbxException;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.annotation.View;
@@ -14,7 +16,6 @@ import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.StreamedContent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,9 @@ public class AdministrationView {
     @Autowired
     ImportExportService impExpService;
 
+    @Autowired
+    FahrzeugService fahrzeugService;
+
     @Getter
     @Setter
     private List<Fahrt> fahrten;
@@ -47,12 +51,17 @@ public class AdministrationView {
 
     @Getter
     @Setter
+    private List<Fahrzeug> fahrzeuge;
+
+    @Getter
+    @Setter
     private Fahrt newFahrt;
 
     @PostConstruct
     public void initAll() {
         initKategorien();
         initFahrten();
+        initFahrzeuge();
     }
     public void initFahrten() {
         fahrten = fahrtService.findAll();
@@ -62,12 +71,28 @@ public class AdministrationView {
         kategorien = kategorieService.findAll();
     }
 
+    public void initFahrzeuge() {
+        fahrzeuge = fahrzeugService.findAll();
+    }
+
     public void saveNewFahrt() {
         //Issue #23
         if (newFahrt.getArrTime() != null && newFahrt.getDepTime() != null && newFahrt.getTimeStood() != null && newFahrt.getRiddenKM() != null) {
             newFahrt.setAverageSpeed(newFahrt.getRiddenKM() / aktiveFahrzeit(newFahrt));
         }
         else newFahrt.setAverageSpeed(0.0);
+
+        if((newFahrt.getMileage() == null || newFahrt.getMileage() == 0) && newFahrt.getRiddenKM() != null && newFahrt.getRiddenKM() != 0) {
+            int mileageAfterRide = newFahrt.getFahrzeug().getMileage() + newFahrt.getRiddenKM();
+            newFahrt.setMileage(mileageAfterRide);
+            newFahrt.getFahrzeug().setMileage(mileageAfterRide);
+        }
+
+        else if(newFahrt.getMileage() != null && newFahrt.getMileage() != 0 && (newFahrt.getRiddenKM() == null || newFahrt.getRiddenKM() == 0)) {
+            int riddenKM = newFahrt.getMileage() - newFahrt.getFahrzeug().getMileage();
+            newFahrt.setRiddenKM(riddenKM);
+            newFahrt.getFahrzeug().setMileage(newFahrt.getMileage());
+        }
         //End Issue #23
 
         fahrtService.save(newFahrt);
@@ -87,7 +112,7 @@ public class AdministrationView {
 
     //Issue #6
     public Fahrt setAdditionalFahrt(Fahrt fahrt){
-        fahrt.setCarPlate(newFahrt.getCarPlate());
+        fahrt.setFahrzeug(newFahrt.getFahrzeug());
         fahrt.setDate(newFahrt.getDate());
         fahrt.setDepTime(newFahrt.getDepTime());
         fahrt.setArrTime(newFahrt.getArrTime());
@@ -194,6 +219,38 @@ public class AdministrationView {
 
     public void exportDataToCloud() throws IOException, DbxException {
         impExpService.exportDataToCloud();
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Backup successful", "Data was sucessfully uploaded to Dropbox"));
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Backup erfolgreich", "Daten wurden auf Dropbox hochgeladen"));
+    }
+
+    public void onRowEditFz(RowEditEvent<Fahrzeug> event) {
+        if(fahrzeugService.findAll().stream().anyMatch(f -> f.getCarPlate().equalsIgnoreCase(event.getObject().getCarPlate()))) {
+            FacesContext.getCurrentInstance().addMessage(null,  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Bearbeiten fehlgeschlagen", "Fahrzeug " + event.getObject().getCarPlate() + " existiert bereits"));
+        } else {
+            fahrzeugService.save(event.getObject());
+            FacesMessage msg = new FacesMessage("Bearbeitet", "Fahrzeug " + event.getObject().getCarPlate());
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+            initFahrzeuge();
+        }
+    }
+    public void onRowCancelFz(RowEditEvent<Fahrzeug> event) {
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Bearbeiten abgebrochen", "Fahrzeug " + event.getObject().getCarPlate());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+    public void addNewFahrzeug() {
+        Fahrzeug newFz = new Fahrzeug();
+        fahrzeugService.save(newFz);
+        initFahrzeuge();
+    }
+
+    public void deleteFahrzeug(Fahrzeug fz) {
+        if (fahrten.stream().anyMatch(f -> f.getFahrzeug() != null && f.getFahrzeug().getCarPlate() != null && f.getFahrzeug().getCarPlate().equals(fz.getCarPlate()))) {
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Löschen fehlgeschlagen", "Fahrzeug wird verwendet.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        } else {
+            fahrzeugService.delete(fz);
+            initFahrzeuge();
+            FacesMessage msg = new FacesMessage("Fahrzeug gelöscht", "Fahrzeug " + fz.getCarPlate() + " gelöscht.");
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
     }
 }

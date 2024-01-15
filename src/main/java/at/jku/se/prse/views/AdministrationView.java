@@ -4,21 +4,21 @@ package at.jku.se.prse.views;
 import at.jku.se.prse.enums.Wiederholung;
 import at.jku.se.prse.model.Fahrt;
 import at.jku.se.prse.model.Kategorie;
-import at.jku.se.prse.services.KategorieService;
 import at.jku.se.prse.services.FahrtService;
-
+import at.jku.se.prse.services.ImportExportService;
+import at.jku.se.prse.services.KategorieService;
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.annotation.View;
 import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import lombok.Getter;
 import lombok.Setter;
-
 import org.primefaces.event.RowEditEvent;
+import org.primefaces.model.StreamedContent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.temporal.ChronoField;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 @Component
@@ -30,6 +30,9 @@ public class AdministrationView {
 
     @Autowired
     KategorieService kategorieService;
+
+    @Autowired
+    ImportExportService impExpService;
 
     @Getter
     @Setter
@@ -182,4 +185,7 @@ public class AdministrationView {
         return newFahrt.getAverageSpeed();
     }
 
+    public StreamedContent exportData() throws InvocationTargetException, IllegalAccessException {
+        return impExpService.exportDataAsStreamedContent();
+    }
 }

@@ -11,6 +11,12 @@
                 <h:form id="form">
                     <p:growl id="msgs" showDetail="true" sticky="true"/>
 
+                    <p:panelGrid columns="2" style="width: 15%">
+                        <p:commandButton style="width:100%" value="Export XLSX" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);">
+                            <p:fileDownload value="#{administrationView.exportData()}" />
+                        </p:commandButton>
+                    </p:panelGrid>
+
                     <p:dataTable id="fahrten" var="fahrt" value="#{administrationView.fahrten}" editable="true" style="margin-bottom:20px" lazy="false">
                         <p:ajax event="rowEdit" listener="#{administrationView.rowEditFahrt}" update=":form:msgs"/>
                         <p:ajax event="rowEditCancel" listener="#{administrationView.rowCancelFahrt}" update=":form:msgs"/>

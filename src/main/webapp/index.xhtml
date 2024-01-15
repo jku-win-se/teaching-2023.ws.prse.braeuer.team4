@@ -15,6 +15,7 @@
                         <p:commandButton style="width:100%" value="Export XLSX" ajax="false" onclick="PrimeFaces.monitorDownload(start, stop);">
                             <p:fileDownload value="#{administrationView.exportData()}" />
                         </p:commandButton>
+                        <p:commandButton style="width:100%" value="Export Cloud" action="#{administrationView.exportDataToCloud()}"/>
                     </p:panelGrid>
 
                     <p:dataTable id="fahrten" var="fahrt" value="#{administrationView.fahrten}" editable="true" style="margin-bottom:20px" lazy="false">

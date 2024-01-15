@@ -118,11 +118,17 @@ Auf der Startseite gibt es unten links zwei Button, welche zu der Anlegeübersic
 
 ## Startseite
 
+![grafik](https://github.com/jku-win-se/teaching-2023.ws.prse.braeuer.team4/assets/147154110/d14e36f0-0a43-42f7-bc4f-417b84fcc94d "Startseite")
+
 Grundsätzlich finden sich fast alle Funktionen auf der Startseite wieder. Wie im Screenshot erkennbar sieht man eine Tabelle mit den Spalten Id, Status, Kennzeichen, Datum, Abfahrtszeit, Ankunftszeit, Kilometer, Tachostand, Stehzeit, Durchschnittsgeschw. *(Durchschnittsgeschwindigkeit)* und Kategorien. Links unten befindet sich ein Button, wodurch man einen Eintrag hinzufügen kann. Nach der Befüllung der gewünschten Felder und nach dem speichern *(siehe Punkt "neue Fahrt anlegen")* wird ein neuer Eintrag in der Tabelle angezeigt. Dieser kann bearbeitet werden indem man auf das Stift-Symbol direkt am rechten Rand des Eintrages klickt. Änderungen können durch einen Klick auf den danach erscheinenden Haken gespeichert und mit einem Klick auf das erscheinende Kreuz verworfern werden. Rechts neben der Änderungsfunktion befindet sich ein Symbol einer Mülltonne und mit einem Klick darauf kann der Eintrag wieder gelöscht werden.
 Filtern und sortieren kann man die Einträge gleich in der Zeile der Spaltenbezeichnungen. Durch einen Klick auf die Pfeil Symbole kann entwender auf- oder absteigend sortiert werden (die Sortierung findet in jener Spalte statt, in der die Pfeile angeklickt werden). Direkt unter den Spaltenüberschriften befindet sich ein Eingabefeld, wodurch man nach bestimmten Einträgen filtern kann. Gibt man zum Beispiel in der Spalte *Kennzeichen* ein Kennzeichen in das Filter-Eingabefeld ein, dann werden nur Einträge mit diesem Kennzeichen angezeigt.
 Szenario: Als Mitarbeiter*in der Administration kann ich alle vergangenen, laufenden und zuküntige Fahrten sehen und bearbeiten.
 
 ## Neue Fahrt anlegen
+
+![grafik](https://github.com/jku-win-se/teaching-2023.ws.prse.braeuer.team4/assets/147154110/19aeb3a5-c5d2-4d08-86b0-c79fc43e75cb "Neue Fahrt 1")
+
+![grafik](https://github.com/jku-win-se/teaching-2023.ws.prse.braeuer.team4/assets/147154110/7dc2d017-339a-4f66-9c7a-c53f8ee7715a "Neue Fahrt 2")
 
 Will man eine neue Fahrt anlegen muss man auf der Startseite den Button "+ Neue Fahrt" klicken und ein kleines Fenster popt auf. Hier können in den Feldern der jeweiligen Beschriftungen die Daten entsprechend eingegeben werden. Folgende Daten können eingegeben werden: KFZ-Kennzeichen, Datum, Abfahrtszeit, Ankunftszeit, Gefahrene Kilometer, Tachostand, Stehzeit, Wiederholung (Auswahl zwischen: Keine Wiederholung, wöchentlich, monatlich und jährlich) und Anzahl der Wiederholungen. Die letzten beiden Felder dienen dazu, wiederkehrende Fahrten anzulegen. Wählt man zum Beispiel eine wöchentliche Wiederholung mit einer Anzahl von 4. Dann werden 4 neue Einträge erstellt, wobei das Datum immer um eine Woche weiter geht.
 Wenn alle gewünschten Felder befüllt wurden, dann kann man durch einen Klick auf den Button "Speichern" einen neuen (oder mehrere) Eintrag erstellen. Klickt man vor dem Speichern auf das "X" in der rechten oberen Ecke, dann wird der neue Eintrag verworfen.
@@ -130,11 +136,16 @@ Szenario: Als Mitarbeiter*in kann ich die Datein meiner derzeitigen Fahrt eingeb
 
 ## Kategorien
 
+![grafik](https://github.com/jku-win-se/teaching-2023.ws.prse.braeuer.team4/assets/147154110/d6a2e024-7103-4159-a7a9-8d5b612344fb "Kategorie")
+
 Alle derzeitigen Kategorien können durch einen Klick auf den sich links unten befindenden Button "Kategorien" angezeigt werden. Dafür pop ein kleines Fenster auf und zeigt alle Kategorien an. Genau wie bei der Startseite können die Kategorien bearbeitet und gelöscht werden. Durch einen Klick auf den sich links oben befindenden Button "+ Add" wird eine leere Kategorie hinzugefügt, welche durch das Bearbeiten befüllt werden kann.
 Durch einen Klick auf das "X" rechts oben kann man das Fenster schließen.
 Szenario: Die Administration soll eine die Kategorie Reparatur anlegen. Dazu öffnen sie das Fenster für die Kategorien und legen eine neue leere Kategorie an, welche durch das Bearbeitungstool zur Kategorie Reparatur gemacht wird.
+*Hinweis: Ist eine Kategorie in Verwendung, so kann sie nicht gelöscht werden.*
 
 ## Geschäftsführung
+
+![grafik](https://github.com/jku-win-se/teaching-2023.ws.prse.braeuer.team4/assets/147154110/8077c87c-fecc-495a-8b25-2b2a9d1ea4e8 "Geschäftsführung 1")
 
 Auf dieser Seite werden die grafische und tabellarische Übersicht der Fahrten angezeigt. Durch die Auswahl des Zeitraumes (Felder des Datums von und bis), der Auswahl ob die Ergebnisse nach Monate oder Jahre angezeigt werden sollen und die Auswahl der Kategorien, können die Ergebnisse angezeigt werden. Somit kann eine Übersicht erlangt werden wieviele Kilometer je Kategorie in einem bestimmten Zeitraum zurückgelegt wurden.
 Szenario: Die Geschäftsführung möchte wissen wieviele Kilometer Für Reparaturen im letzten Jahr gefahren wurden und wählen die Monatsansicht, um eine Gliederung pro Monat einsehen zu können.

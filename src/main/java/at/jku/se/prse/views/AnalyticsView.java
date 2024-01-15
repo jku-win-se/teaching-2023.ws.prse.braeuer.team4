@@ -146,15 +146,18 @@ public class AnalyticsView {
         if(choice.equals("Monat")) {
             while (!start.isAfter(end)) {
                 Month month = start.getMonth();
+                int year = start.getYear();
                 labels.add(start.getYear() + " " + month.getDisplayName(TextStyle.FULL, Locale.GERMAN));
                 values.add(
                         fahrten.stream()
                                 .filter(f -> f.getDate().getMonth().compareTo(month) == 0)
+                                .filter(f -> f.getDate().getYear() == year)
                                 .filter(f ->  {
                                     if(choiceKats.isEmpty()) return true;
                                     return true;
                                 })
                                 .filter(f -> {
+                                    if(choiceKats.isEmpty()) return true;
                                     for (Kategorie k : choiceKats) {
                                         if(f.getCategories().contains(k)) return true;
                                     }
@@ -174,6 +177,7 @@ public class AnalyticsView {
                         fahrten.stream()
                                 .filter(f -> f.getDate().getYear() == year)
                                 .filter(f -> {
+                                    if(choiceKats.isEmpty()) return true;
                                     for (Kategorie k : choiceKats) {
                                         if(f.getCategories().contains(k)) return true;
                                     }

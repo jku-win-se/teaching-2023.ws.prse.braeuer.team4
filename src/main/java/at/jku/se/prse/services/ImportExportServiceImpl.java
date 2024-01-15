@@ -2,6 +2,9 @@ package at.jku.se.prse.services;
 
 import at.jku.se.prse.model.Fahrt;
 import at.jku.se.prse.model.Kategorie;
+import com.dropbox.core.DbxException;
+import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.files.Metadata;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -14,8 +17,10 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -30,6 +35,9 @@ public class ImportExportServiceImpl implements ImportExportService{
 
     @Autowired
     KategorieService katService;
+
+    @Autowired
+    DbxClientV2 dropboxClient;
 
     Map<String, Method> mapFahrt = new LinkedHashMap(){{
         for(Field field : Fahrt.class.getDeclaredFields())
@@ -47,6 +55,11 @@ public class ImportExportServiceImpl implements ImportExportService{
         put("Fahrten", mapFahrt);
         put("Kategorien", mapKategorie);
     }};
+
+    @Override
+    public void exportDataToCloud() throws IOException, DbxException {
+        uploadFile(createBosFromData(), "/FahrtenbuchApp/output_" + LocalDateTime.now() + ".xlsx");
+    }
 
     @Override
     public StreamedContent exportDataAsStreamedContent() {
@@ -114,5 +127,12 @@ public class ImportExportServiceImpl implements ImportExportService{
             throw new RuntimeException("Something went wrong - please try again or contact our Tech-Support");
         }
         return bos;
+    }
+
+    private void uploadFile(ByteArrayOutputStream bao, String filePath) throws IOException, DbxException {
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(bao.toByteArray());
+        Metadata uploadMetaData = dropboxClient.files().uploadBuilder(filePath).uploadAndFinish(inputStream);
+        logger.info("upload meta data =====> {}", uploadMetaData.toString());
+        inputStream.close();
     }
 }

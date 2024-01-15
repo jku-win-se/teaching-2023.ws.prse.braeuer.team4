@@ -34,3 +34,6 @@ build/
 
 ### DB-Files ###
 /src/main/resources/db/
+
+### dev props ###
+/developer.properties

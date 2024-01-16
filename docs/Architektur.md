@@ -4,14 +4,92 @@
 
 ### UML-Diagramm
 
-![284981659-7b235fe3-97c6-48c2-8011-4e85c015596c](https://github.com/jku-win-se/teaching-2023.ws.prse.braeuer.team4/assets/147154110/522afbe1-19ea-4bb1-901b-bed74a52d744 "UML-Diagramm")
+![test drawio](https://github.com/jku-win-se/teaching-2023.ws.prse.braeuer.team4/assets/147154110/fb91ff2e-fc2a-4328-8dfb-8754975cd8fe "UML-Klassendiagramm")
+
+Das UML-Diagramm beschreibt die drei Entitäten (Fahrt, Fahrzeug und Kategorie) und Enum Klassen, wobei die Beziehungen wichtig sind. Dadurch wird gezeigt, dass ein Fahrzeug mehrere Fahrten machen kann, aber eine Fahrt nur von einem Fahrzeug durchgeführt werden. Dabei können mehrere Kategorien einer Fahrt zugewiesen und die Kategorien für mehrere Fahrten verwendet werden.
 
 ### Design
 
+#### Entscheidung 1:
+- Entscheidung: Startseite entspricht der Hauptseite, worauf die Einträge/Fahrten angelegt und bearbeitet werden können
+- Begründung: einfache und schnelle Handhabung der wichtigsten Funktionen
+- Alternativen, die in Betracht gezogen wurden: Übersichtsseite, welche auf jeweilige Unterseiten verlinkt
+- Annahmen: -
+- Konsequenzen: Startseite und somit die Landingpage beinhaltet für die meisten Nutzer alle Funktionen
+
+#### Entscheidung 2:
+- Entscheidung: Wiederholende Fahrten werden durch eine Auswahl von wöchentlich, monatlich oder jährlich und mit der Angaben der Anzahl der Wiederholungen angelegt
+- Begründung: Projektteam empfand diese Lösung am intuitivsten
+- Alternativen, die in Betracht gezogen wurden: Zeitraum ist auszuwählen in dem entweder wöchentliche, monatliche oder jährliche Wiederholungen stattfinden sollen
+- Annahmen: Es werden nur wöchentliche, monatliche oder jährliche Wiederholungen benötigt
+- Konsequenzen: Benutzer muss wissen wie oft eine Fahrt angelegt werden soll
+
+#### Entscheidung 3:
+- Entscheidung: Grafische Darstellung soll als Liniendiagramm dargestellt werden
+- Begründung: "Ausbrüche" der gefahrenen Kilometer können schnell und einfach eingesehen werden
+- Alternativen, die in Betracht gezogen wurden: Balkendiagramm
+- Annahmen: Grafische Darstellung war dem Projektteam überlassen, wie diese aussehen soll
+- Konsequenzen: Alle Fahrzeuge werden auf eine Linie zusammengefasst
+
 ## Implementierung
 
+### Aspekte der Implementierung
+Das Projekt soll eine einfache Bedienung der Webapp ermöglichen und für Benutzer in wenigen Arbeitsschritten die erforderte Leistung erbringen. Für jeweilige Entitäten sollen eigene Klassen erstellt werden. Somit entstanden drei Model Klassen für die Fahrt, Fahrzeuge und Kategorien.
+Da am Ende zwei wirkliche Seiten (einmal die Startseite und einmal die Geschäftsführung), werden diese in zwei view Klassen aufgeteilt.
+Statische Daten, welche im Zusammenhand stehen, sollen in Enum Klassen hinterlegt werden.
+
+Bei der Speicherung von neuen Fahrten ist die Berücksichtigung der gewünschten Forderungen wichtig und müssen verschiedene Ergebnisse berücksichtigt werden. Zu den Berücksichtigungen gehören Punkte gehören zum Beispiel, die Durchschnittsgeschwindigkeit, der Tachostand, oder Wiederholungen von Fahrten (wöchentlich, monatlich, oder jährlich).
+
+>      public void saveNewFahrt() {
+>        //Issue #23
+>        if (newFahrt.getArrTime() != null && newFahrt.getDepTime() != null && newFahrt.getTimeStood() != null && newFahrt.getRiddenKM() != null) {
+>            newFahrt.setAverageSpeed(newFahrt.getRiddenKM() / aktiveFahrzeit(newFahrt));
+>        }
+>        else newFahrt.setAverageSpeed(0.0);
+>        if((newFahrt.getMileage() == null || newFahrt.getMileage() == 0) && newFahrt.getRiddenKM() != null && newFahrt.getRiddenKM() != 0) {
+>            int mileageAfterRide = newFahrt.getFahrzeug().getMileage() + newFahrt.getRiddenKM();
+>            newFahrt.setMileage(mileageAfterRide);
+>            newFahrt.getFahrzeug().setMileage(mileageAfterRide);
+>        }
+>        else if(newFahrt.getMileage() != null && newFahrt.getMileage() != 0 && (newFahrt.getRiddenKM() == null || newFahrt.getRiddenKM() == 0)) {
+>            int riddenKM = newFahrt.getMileage() - newFahrt.getFahrzeug().getMileage();
+>            newFahrt.setRiddenKM(riddenKM);
+>            newFahrt.getFahrzeug().setMileage(newFahrt.getMileage());
+>        }
+>        //End Issue #23
+>        fahrtService.save(newFahrt);
+>        //Issue #6
+>        if(newFahrt.getNumberOfRepetitions() > 1 && newFahrt.getRepetition() != Wiederholung.NICHT_DEFINIERT) {
+>            Fahrt fahrt = new Fahrt();
+>            fahrt = setAdditionalFahrt(fahrt);
+>            if(fahrt.getRepetition() == Wiederholung.WOECHENTLICH) repetitionWeekly(fahrt);
+>            else if(fahrt.getRepetition() == Wiederholung.MONATLICH) repetitionMonthly(fahrt);
+>            else if(fahrt.getRepetition() == Wiederholung.JAEHRLICH) repetitionYearly(fahrt);
+>        }
+>        //End Issue #6
+>        initFahrten();
+>      }
+
+Falls eine Zeile bearbeitet wird, sollen natürlich auch die automatisch hinterlegten Daten angepasst werden.
+
+>      public void rowEditFahrt(RowEditEvent<Fahrt> event) {
+>       Fahrt f = event.getObject();
+>       if (f.getArrTime() != null && f.getDepTime() != null && f.getTimeStood() != null && f.getRiddenKM() != null) {
+>           f.setAverageSpeed(f.getRiddenKM() / aktiveFahrzeit(f));
+>       }
+>       else f.setAverageSpeed(0.0);
+>
+>        if(f.getMileage() != f.getFahrzeug().getMileage()) {
+>            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Tachostand unterschiedlich", "Tachostand unterscheidet sich zwischen Fahrzeug und Fahrt. Bitte überprüfen!"));
+>        }
+>        fahrtService.save(f);
+>        FacesMessage msg = new FacesMessage("Edited", "Fahrt " + event.getObject().getId());
+>        FacesContext.getCurrentInstance().addMessage(null, msg);
+>        initFahrten();
+>      }
+
 ### Projektstruktur
-Das Programm wurde in folgende Projektstruktur aufgeteilt:
+Um den Code so leserlich wie möglich zu gestalten wird der Code in entsprechende Unterordner aufgeteilt, um gleich bei der Struktur einen Überblick zu bekommen, ohne dass man den Code analysieren muss. Die Namensgebung der Klassen soll so klar wie möglich gehalten werden. Das Programm wurde in folgende Projektstruktur aufgeteilt:
 - java
   - at.jku.se.prse
     - enums
@@ -19,6 +97,7 @@ Das Programm wurde in folgende Projektstruktur aufgeteilt:
       - Wiederholung.java  (Enum)
     - model
       - Fahrt.java  (Klasse)
+      - Fahrzeug.java (Klasse)
       - Kategorie.java  (Klasse)
     - repositories
       - FahrtRepository.java  (Interface)
@@ -28,7 +107,12 @@ Das Programm wurde in folgende Projektstruktur aufgeteilt:
       - FahrtService.java  (Interface)
       - KategorieServiceImpl.java (Klasse)
       - KategorieService.java (Interface)
+      - FahrzeugService.java (Interface)
+      - FahrzeugServiceImpl.java (Klasse)
+      - ImportExportService.java (Interface)
+      - ImportExportServiceImpl.java
     - views
+      - AdministrationView.java (Klasse)
       - AnalyticsView.java  (Klasse)
     - FahrtenpuchApp.java (Main Klasse)
 - webapp
@@ -50,11 +134,9 @@ Das Programm wurde in folgende Projektstruktur aufgeteilt:
 - KategorieServiceImpl implementiert KategorieService
 - AdministrationsView benutzt Daten von Fahrt und Kategorie, sowie FahrtService und KategorieService
 - AnalyticsView benutzt Daten von Fahrt und Kategorie, sowie FahrtService und KategorieService
-- Fahrt benutzt Daten von Kategorie und beine Enum Klassen
-
+- Fahrt benutzt Daten von Kategorie, Fahrzeug und beiden Enum Klassen
 
 ### Alle Imports
-
 - import at.jku.se.prse.services.KategorieService;
 - import jakarta.annotation.PostConstruct;
 - import jakarta.faces.annotation.View;

@@ -134,10 +134,9 @@ Um den Code so leserlich wie möglich zu gestalten wird der Code in entsprechend
 - KategorieServiceImpl implementiert KategorieService
 - AdministrationsView benutzt Daten von Fahrt und Kategorie, sowie FahrtService und KategorieService
 - AnalyticsView benutzt Daten von Fahrt und Kategorie, sowie FahrtService und KategorieService
-- Fahrt benutzt Daten von Kategorie und beine Enum Klassen
+- Fahrt benutzt Daten von Kategorie, Fahrzeug und beiden Enum Klassen
 
 ### Alle Imports
-
 - import at.jku.se.prse.services.KategorieService;
 - import jakarta.annotation.PostConstruct;
 - import jakarta.faces.annotation.View;

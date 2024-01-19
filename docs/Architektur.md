@@ -31,6 +31,11 @@ Das UML-Diagramm beschreibt die drei Entitäten (Fahrt, Fahrzeug und Kategorie) 
 - Annahmen: Grafische Darstellung war dem Projektteam überlassen, wie diese aussehen soll
 - Konsequenzen: Alle Fahrzeuge werden auf eine Linie zusammengefasst
 
+#### Entscheidung 4:
+- Entscheidung: Export so generisch wie möglich gestalten
+- Begründung: Falls Erweiterungen an der Applikation durchgenommen werden, können diese leichter im Export berücksichtigt werden
+- Konsequenzen: Verwendung von Java Reflect KLassen
+
 ## Implementierung
 
 ### Aspekte der Implementierung
@@ -137,7 +142,6 @@ Um den Code so leserlich wie möglich zu gestalten wird der Code in entsprechend
 - Fahrt benutzt Daten von Kategorie, Fahrzeug und beiden Enum Klassen
 
 ### Alle Imports
-- import at.jku.se.prse.services.KategorieService;
 - import jakarta.annotation.PostConstruct;
 - import jakarta.faces.annotation.View;
 - import jakarta.faces.application.FacesMessage;

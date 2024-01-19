@@ -11,6 +11,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AdministrationViewTest {
 
+    @Test
+    public void neueFahrt(){           //testen ob eine neue Fahrt angelegt wird
+        Fahrt fahrt = new Fahrt();
+        fahrt.setRiddenKM(5);
+        assertEquals(5, fahrt.getRiddenKM());
+    }
+    
     // Start Durchschnittsgeschwindigkeitn bzw. Aktive Fahrzeit
     @Test
     public void testAktiveFahrzeit(){           //ohne Stehzeit

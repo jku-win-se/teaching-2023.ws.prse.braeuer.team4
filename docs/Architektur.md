@@ -178,6 +178,8 @@ Um den Code so leserlich wie möglich zu gestalten wird der Code in entsprechend
 
 ### JUnit Tests
 
+- Erfolgreiches Anlegen einer Fahrt
+  - gespeicherte Daten in einer Fahrt werden gespeichert
 - Durchschnittsgeschwindigkeit
   - Alle Daten sind angegeben
   - Ankunftszeit ist nicht angegeben

@@ -33,14 +33,14 @@ jobs:
     - name: Run the Maven verify phase
       run: mvn --batch-mode --update-snapshots verify
 
-        - name: PMD Code Check
-          uses: pmd/pmd-github-action@v1
-          id: pmd
-          with:
-            version: '6.40.0'
-            sourcePath: 'src/main/java'
-            rulesets: 'ruleset.xml'
+    - name: PMD Code Check
+      uses: pmd/pmd-github-action@v1
+      id: pmd
+      with:
+        version: '6.40.0'
+        sourcePath: 'src/main/java'
+        rulesets: 'ruleset.xml'
 
-        - name: Automatisierung bei einer Verletzung stoppen
-          if: steps.pmd.outputs.violations != 0
-          run: exit 1
+    - name: Automatisierung bei einer Verletzung stoppen
+      if: steps.pmd.outputs.violations != 0
+      run: exit 1

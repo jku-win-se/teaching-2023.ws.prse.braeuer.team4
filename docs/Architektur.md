@@ -209,7 +209,10 @@ Um den Code so leserlich wie möglich zu gestalten wird der Code in entsprechend
 ### Code Qualität
 
 PMD zeigt auch Warnungen als Fehler/Error an.
-Es wurde nichts anderes außer Warnungen erkannt in den Builds.
+
+file:developer.properties können nicht gefunden werden.
+In der Datei developer.properties wird der OAUTH2-Token vom verlinkten Dropbox-Account gespeichert. Damit dieser nicht im Reository landet, wird die Datei durch einen Eintrag im Git-ignore-File nicht auf Git gespeichert. Dadurch wird sie jedoh auch nicht beim Klonen des Repositories heruntergeladen, was beim Starten der Applikation zu einem Fehler führt.
+Dieser würde jedoch jedenfalls auftreten, wenn kein OAUTH2-Token angegeben wird, da beim Starten der Applikation ein SPring-Bean mit der Dropbox-Connection erzeugt wird, der eine Exception wirft, wenn er sich nicht erfolgreich mit Dropbox verbinden kann.
 
 ### Testfälle
 #### Testfall ID: #5

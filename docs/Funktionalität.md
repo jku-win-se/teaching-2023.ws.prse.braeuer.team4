@@ -1,3 +1,34 @@
+# Funktionalität
+
+## Inhalt
+- Projektbeschreibung
+- Umgesetzte Anforderungen
+  1. Fahrt ins Fahrtenbuch eintragen
+  2. Übersicht aller Einträge für das Backoffice
+  3. Bearbeitung von Fahrtenbucheinträgen
+  4. Löschen von Fahrtenbucheinträgen im Backoffice
+  5. Anlegen von wiederkehrenden/zukünftigen Fahrten im Backoffice
+  6. Anzeige des Fahrtstatus im Backoffice
+  7. Zuordnung von Kategorien zu Fahrten im Backoffice
+  8. Filtern nach Kategorie
+  9. Filtern nach Datum
+  10. Sortierung generell
+  11. Sortieren & Filtern – Durchschnittsgeschwindigkeit
+  12. Analyse grafisch
+  13. Daten Export
+  14. Analyse tabellarisch
+  15. Import von Daten
+  16. Datenexport Cloud
+- Überblick über das System aus Benutzersicht
+  1. Navigation
+  2. Startseite
+  3. Fahrzeuge
+  4. Neue Fahrt anlegen
+  5. Kategorien
+  6. Export
+  7. Geschäftsführung
+  8. Beispiel
+
 # Projektbeschreibung
 
 In diesem Projekt wird ein Fahrtenbuch umgesetzt. Neue Fahrten können angelegt, bearbeitet und gelöscht werden, wobei ein jeweiliger Status beschreibt, ob Fahrten vergangen, zukünftig oder gerade durchgeführt werden. Auch eine zukünftige Planung mehrerer sich wiederholende Fahrten ist möglich.
@@ -35,7 +66,7 @@ Als Handwerker*in benötige ich die Möglichkeit, bestehende Einträge im Fahrte
 
 Als Mitarbeiter*in des Backoffice benötige ich die Möglichkeit, bestehende Einträge im Fahrtenbuch zu löschen. Dies ermöglicht es mir, versehentlich doppelt erstellte Einträge oder nicht mehr relevante Einträge zu entfernen.
 
-**Umsetzung:** Sebastian Hinterbauer
+**Umsetzung:** Jakob Sommerauer
 
 ## 5. Anlegen von wiederkehrenden/zukünftigen Fahrten im Backoffice
 
@@ -53,7 +84,7 @@ Als Mitarbeiter*in des Backoffice möchte ich den Status einer Fahrt sehen könn
 
 Als Mitarbeiter*in des Backoffice möchte ich jeder Fahrt optional eine oder mehrere Kategorien zuordnen können. Dies ermöglicht mir, dem Management aussagekräftige Auswertungen bereitzustellen. Die Kategorien könnten beispielsweise die Ursache einer Fahrt (Installation, Reparatur, Kontrolle, usw.) darstellen.
 
-**Umsetzung:** Sebastian Hinterbauer
+**Umsetzung:** Jakob Sommerauer
 
 ## 8. Filtern nach Kategorie
 
@@ -102,46 +133,89 @@ Als Manager:in möchte ich die gefahrenen Kilometer je Monat und Jahr (gesamt od
 
 Als System Administrator:in möchte ich exportierte Daten auch wieder importieren können, um diese nicht manuell zu rekonstruieren und eingeben zu müssen.
 
-**Umsetzung:** Sebastian Hinterbauer
+**Umsetzung:** Martin Froschauer
 
 ## 16. Datenexport Cloud
 Als System Administrator:in möchte ich die im System gespeicherten Daten in ein Cloud-System (z.B. Dropbox) exportieren können, damit dem Unternehmen ein Backup der Daten losgelöst von der lokalen IT-Infrastruktur zur Verfügung steht.
 
-**Umsetzung:** Sebastian Hinterbauer
+**Umsetzung:** Martin Froschauer
 
 # Überblick über das System aus Benutzersicht
 
 ## Navigation
 
 Links oben befinden sich zwei Menüpunkte. Einmal "Administration" welcher auf die Startseite verlinkt und "Geschäftsführung" welcher auf die Seite für die grafische und tabellarische Übersicht der Fahrten verlinkt.
-Auf der Startseite gibt es unten links zwei Button, welche zu der Anlegeübersicht für eine neue Fahrt und den Kategorien verlinken.
+Auf der Startseite gibt es unten links drei Button, welche zu der Anlegeübersicht für eine neue Fahrt, den Kategorien und der Fahrzeuge verlinken. Rechts oben befinden sich zwei Button für den Export im xlsx Format und den Export in eine Dropbox.
 
 ## Startseite
 
-![grafik](https://github.com/jku-win-se/teaching-2023.ws.prse.braeuer.team4/assets/147154110/d14e36f0-0a43-42f7-bc4f-417b84fcc94d "Startseite")
+![grafik](https://github.com/jku-win-se/teaching-2023.ws.prse.braeuer.team4/assets/147154110/ee14b975-eff6-4fdc-a10a-1030748494b5 "Startseite")
 
-Grundsätzlich finden sich fast alle Funktionen auf der Startseite wieder. Wie im Screenshot erkennbar sieht man eine Tabelle mit den Spalten Id, Status, Kennzeichen, Datum, Abfahrtszeit, Ankunftszeit, Kilometer, Tachostand, Stehzeit, Durchschnittsgeschw. *(Durchschnittsgeschwindigkeit)* und Kategorien. Links unten befindet sich ein Button, wodurch man einen Eintrag hinzufügen kann. Nach der Befüllung der gewünschten Felder und nach dem speichern *(siehe Punkt "neue Fahrt anlegen")* wird ein neuer Eintrag in der Tabelle angezeigt. Dieser kann bearbeitet werden indem man auf das Stift-Symbol direkt am rechten Rand des Eintrages klickt. Änderungen können durch einen Klick auf den danach erscheinenden Haken gespeichert und mit einem Klick auf das erscheinende Kreuz verworfern werden. Rechts neben der Änderungsfunktion befindet sich ein Symbol einer Mülltonne und mit einem Klick darauf kann der Eintrag wieder gelöscht werden.
-Filtern und sortieren kann man die Einträge gleich in der Zeile der Spaltenbezeichnungen. Durch einen Klick auf die Pfeil Symbole kann entwender auf- oder absteigend sortiert werden (die Sortierung findet in jener Spalte statt, in der die Pfeile angeklickt werden). Direkt unter den Spaltenüberschriften befindet sich ein Eingabefeld, wodurch man nach bestimmten Einträgen filtern kann. Gibt man zum Beispiel in der Spalte *Kennzeichen* ein Kennzeichen in das Filter-Eingabefeld ein, dann werden nur Einträge mit diesem Kennzeichen angezeigt.
-Szenario: Als Mitarbeiter*in der Administration kann ich alle vergangenen, laufenden und zuküntige Fahrten sehen und bearbeiten.
+Grundsätzlich finden sich fast alle Funktionen auf der Startseite wieder. Wie im Screenshot erkennbar sieht man eine Tabelle mit den Spalten Id, Status, Kennzeichen, Datum, Abfahrtszeit, Ankunftszeit, Kilometer, Tachostand, Stehzeit, Durchschnittsgeschw. *(Durchschnittsgeschwindigkeit)* und Kategorien. Links unten befindet sich ein Button, wodurch man einen Eintrag (Fahrt) hinzufügen kann. Nach der Befüllung der gewünschten Felder und nach dem Speichern *(siehe Punkt "neue Fahrt anlegen")* wird ein neuer Eintrag in der Tabelle angezeigt. Der Status der Fahrt wird dabei im Hintergrund festgelegt.
+
+![grafik](https://github.com/jku-win-se/teaching-2023.ws.prse.braeuer.team4/assets/147154110/3128a619-f257-4c70-89f2-b61c2ae465ae "Startseite mit Eintrag")
+
+
+![grafik](https://github.com/jku-win-se/teaching-2023.ws.prse.braeuer.team4/assets/147154110/4b70a5f4-8e77-454b-8bc9-6f803dbdce3b "Startseite - Eintrag bearbeiten")
+
+Der Eintrag kann bearbeitet werden indem man auf das Stift-Symbol direkt am rechten Rand des Eintrages klickt. Änderungen können durch einen Klick auf den erschienenen Haken gespeichert und mit einem Klick auf das erschienene Kreuz verworfern werden. Die Durchschnittsgeschwindigkeit kann nicht bearbeitet werden, da diese im Hintergrund berechnet wird.
+Rechts neben der Änderungsfunktion befindet sich ein Symbol einer Mülltonne und mit einem Klick darauf kann der Eintrag wieder gelöscht werden.
+Filtern und sortieren kann man die Einträge gleich in der Zeile der Spaltenbezeichnungen. Durch einen Klick auf die Pfeil-Symbole kann entwender auf- oder absteigend sortiert werden (die Sortierung findet in jener Spalte statt, in der die Pfeile angeklickt werden). Direkt unter den Spaltenüberschriften befindet sich ein Eingabefeld, wodurch man nach bestimmten Einträgen filtern kann. Gibt man zum Beispiel in der Spalte *Kennzeichen* ein Kennzeichen in das Filter-Eingabefeld ein, dann werden nur Einträge mit diesem Kennzeichen angezeigt.
+
+*Szenario:* Als Mitarbeiter*in der Administration kann ich alle vergangenen, laufenden und zuküntige Fahrten sehen und bearbeiten.
+
+## Fahrzeuge
+
+![grafik](https://github.com/jku-win-se/teaching-2023.ws.prse.braeuer.team4/assets/147154110/95a047e4-b7c6-48d3-b27c-56efc60d0d2c "Fahrzeuge 1")
+
+
+![grafik](https://github.com/jku-win-se/teaching-2023.ws.prse.braeuer.team4/assets/147154110/9fc67cbd-ac42-4a82-80a7-46d8ef8c6090 "Fahrzeuge 2")
+
+Bevor überhaupt eine Fahrt angelegt werden kann, muss mindestens ein Fahrzeug angelegt worden sein. Zu der Übersicht über alle Fahrzeuge gelangt man, indem man auf den sich links unten befindended Button "Fahrzeuge" klickt. Die Fahrzeuge werden durch die Felder ID, Kennzeichen und Tachostand angezeigt.
+
+Genau wie bei der Startseite können die Fahrzeuge bearbeitet und gelöscht werden. Durch einen Klick auf den sich links oben befindenden Button "+ Add" wird ein leeres Fahrzeug hinzugefügt, welches durch das Bearbeiten befüllt werden kann.
+Durch einen Klick auf das "X" rechts oben kann man das Fenster schließen.
+
+*Szenario:* Als Mitarbeiter*in der Administration möchte ich unsere Flotte anlegen und öffne die Fahrzeugübersicht. Wir besitzen vier Fahrzeuge und deshalb klicke ich viermal auf den "+ Add" Button. Danach bearbeite ich jeden Eintrag einzeln und gebe das jeweilige Kennzeichen und den dazugehörigen Tachostand ein. Danach schließe ich das Fenster wieder.
 
 ## Neue Fahrt anlegen
 
-![grafik](https://github.com/jku-win-se/teaching-2023.ws.prse.braeuer.team4/assets/147154110/19aeb3a5-c5d2-4d08-86b0-c79fc43e75cb "Neue Fahrt 1")
+![grafik](https://github.com/jku-win-se/teaching-2023.ws.prse.braeuer.team4/assets/147154110/4a334d58-7c6a-4a0e-8a3c-003484f9f596 "Neue Fahrt 1")
 
-![grafik](https://github.com/jku-win-se/teaching-2023.ws.prse.braeuer.team4/assets/147154110/7dc2d017-339a-4f66-9c7a-c53f8ee7715a "Neue Fahrt 2")
+
+![grafik](https://github.com/jku-win-se/teaching-2023.ws.prse.braeuer.team4/assets/147154110/4e65edf5-2b87-4c6a-8662-238a8474d78a "Neue Fahrt 2")
 
 Will man eine neue Fahrt anlegen muss man auf der Startseite den Button "+ Neue Fahrt" klicken und ein kleines Fenster popt auf. Hier können in den Feldern der jeweiligen Beschriftungen die Daten entsprechend eingegeben werden. Folgende Daten können eingegeben werden: KFZ-Kennzeichen, Datum, Abfahrtszeit, Ankunftszeit, Gefahrene Kilometer, Tachostand, Stehzeit, Wiederholung (Auswahl zwischen: Keine Wiederholung, wöchentlich, monatlich und jährlich) und Anzahl der Wiederholungen. Die letzten beiden Felder dienen dazu, wiederkehrende Fahrten anzulegen. Wählt man zum Beispiel eine wöchentliche Wiederholung mit einer Anzahl von 4. Dann werden 4 neue Einträge erstellt, wobei das Datum immer um eine Woche weiter geht.
+
+**Pflichtfeld: Anzahl der Wiederholungen** - dieses Feld muss ausgefüllt werden, wenn keine Wiederholungen gewünscht sind, dann soll das Feld mit einer 0 befüllt werden.
+
 Wenn alle gewünschten Felder befüllt wurden, dann kann man durch einen Klick auf den Button "Speichern" einen neuen (oder mehrere) Eintrag erstellen. Klickt man vor dem Speichern auf das "X" in der rechten oberen Ecke, dann wird der neue Eintrag verworfen.
-Szenario: Als Mitarbeiter*in kann ich die Datein meiner derzeitigen Fahrt eingeben und speichern. Bei der Wiederholung werden keine Daten eingegeben, da es sich um eine Einzelfahrt handelt.
+
+*Szenario:* Als Mitarbeiter*in kann ich die Daten meiner derzeitigen Fahrt eingeben und speichern. Bei der Wiederholung werden keine Daten eingegeben, da es sich um eine Einzelfahrt handelt.
 
 ## Kategorien
 
-![grafik](https://github.com/jku-win-se/teaching-2023.ws.prse.braeuer.team4/assets/147154110/d6a2e024-7103-4159-a7a9-8d5b612344fb "Kategorie")
+![grafik](https://github.com/jku-win-se/teaching-2023.ws.prse.braeuer.team4/assets/147154110/6bddc374-0c1f-48df-b435-f27c57f63a2b "Kategorie 1")
 
-Alle derzeitigen Kategorien können durch einen Klick auf den sich links unten befindenden Button "Kategorien" angezeigt werden. Dafür pop ein kleines Fenster auf und zeigt alle Kategorien an. Genau wie bei der Startseite können die Kategorien bearbeitet und gelöscht werden. Durch einen Klick auf den sich links oben befindenden Button "+ Add" wird eine leere Kategorie hinzugefügt, welche durch das Bearbeiten befüllt werden kann.
+
+![grafik](https://github.com/jku-win-se/teaching-2023.ws.prse.braeuer.team4/assets/147154110/c88a8e1f-2a8c-44e7-aca5-0485dd3e7464 "Kategorie 2")
+
+Alle derzeitigen Kategorien können durch einen Klick auf den sich links unten befindenden Button "Kategorien" angezeigt werden. Dafür popt ein kleines Fenster auf und zeigt alle Kategorien an. Genau wie bei der Startseite können die Kategorien bearbeitet und gelöscht werden. Durch einen Klick auf den sich links oben befindenden Button "+ Add" wird eine leere Kategorie hinzugefügt, welche durch das Bearbeiten befüllt werden kann.
 Durch einen Klick auf das "X" rechts oben kann man das Fenster schließen.
-Szenario: Die Administration soll eine die Kategorie Reparatur anlegen. Dazu öffnen sie das Fenster für die Kategorien und legen eine neue leere Kategorie an, welche durch das Bearbeitungstool zur Kategorie Reparatur gemacht wird.
+
+*Szenario:* Die Administration soll eine die Kategorie Reparatur anlegen. Dazu öffnen sie das Fenster für die Kategorien und legen eine neue leere Kategorie an, welche durch das Bearbeitungstool zur Kategorie Reparatur gemacht wird.
+
 *Hinweis: Ist eine Kategorie in Verwendung, so kann sie nicht gelöscht werden.*
+
+## Export
+
+![grafik](https://github.com/jku-win-se/teaching-2023.ws.prse.braeuer.team4/assets/147154110/4ae8dd2d-c84c-4571-8e63-0f1de72a91c3 "Download")
+
+Klickt man auf den Button "Export XLSX" links oben auf der Startseite, so wird eine xlsx Datei heruntergeladen mit der Bezeichnung output.xlsx. In dieser Datei befinden sich alle Daten unterteilt auf Fahrten, Kategorien und Fahrzeuge.
+
+Klickt man auf den Button "Export Cloud" links oben auf der Startseite, so wird eine xlsx Datei mit der Bezeichnung output.xlsx auf Dropbox geladen.
+
+*Szenario:* Als Mitarbeiter*in der Administration möchte ich alle Daten herunterladen, um die Sicherung der Daten zu garantieren.
 
 ## Geschäftsführung
 

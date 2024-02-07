@@ -147,6 +147,8 @@ Als System Administrator:in möchte ich die im System gespeicherten Daten in ein
 Links oben befinden sich zwei Menüpunkte. Einmal "Administration" welcher auf die Startseite verlinkt und "Geschäftsführung" welcher auf die Seite für die grafische und tabellarische Übersicht der Fahrten verlinkt.
 Auf der Startseite gibt es unten links drei Button, welche zu der Anlegeübersicht für eine neue Fahrt, den Kategorien und der Fahrzeuge verlinken. Rechts oben befinden sich zwei Button für den Export im xlsx Format und den Export in eine Dropbox.
 
+*Hinweis: Wir empfehlen den Webbrowser Google Chrome zu verwenden und fall einmal etwas nicht gleich funktioniert, bitte laden Sie die Seite einfach neu.*
+
 ## Startseite
 
 ![grafik](https://github.com/jku-win-se/teaching-2023.ws.prse.braeuer.team4/assets/147154110/ee14b975-eff6-4fdc-a10a-1030748494b5 "Startseite")

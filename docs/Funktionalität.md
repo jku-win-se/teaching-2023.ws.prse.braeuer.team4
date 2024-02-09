@@ -42,7 +42,7 @@ Zu den Stakeholdern gehören Mitarbeiter*innen eines Handwerkbetriebes. Dabei we
 
 # Umgesetzte Anforderungen
 
-Alle folgenden Anforderungen wurden als Webapp mit Java Spring Boot umgesetzt.
+Alle folgenden Anforderungen, bei denen kein Kommentar zur nicht erfolgreichen Umsetzung steht, wurden als Webapp mit Java Spring Boot umgesetzt.
 
 ## 1. Fahrt ins Fahrtenbuch eintragen
 
@@ -127,13 +127,13 @@ Als System Administrator:in möchte ich die im System gespeicherten Daten export
 
 Als Manager:in möchte ich die gefahrenen Kilometer je Monat und Jahr (gesamt oder eingeschränkt auf eine Kategorie) tabellarisch sehen können, um auf Bedarfsänderungen im Fuhrpark reagieren zu können.
 
-**Umsetzung:** Martin Froschauer
+**Umsetzung:** Dieser Punkt wurde nicht umgesetzt!
 
 ## 15. Import von Daten
 
 Als System Administrator:in möchte ich exportierte Daten auch wieder importieren können, um diese nicht manuell zu rekonstruieren und eingeben zu müssen.
 
-**Umsetzung:** Martin Froschauer
+**Umsetzung:** Dieser Punkt wurde nicht umgesetzt!
 
 ## 16. Datenexport Cloud
 Als System Administrator:in möchte ich die im System gespeicherten Daten in ein Cloud-System (z.B. Dropbox) exportieren können, damit dem Unternehmen ein Backup der Daten losgelöst von der lokalen IT-Infrastruktur zur Verfügung steht.
@@ -223,7 +223,7 @@ Klickt man auf den Button "Export Cloud" links oben auf der Startseite, so wird 
 
 ![grafik](https://github.com/jku-win-se/teaching-2023.ws.prse.braeuer.team4/assets/147154110/8077c87c-fecc-495a-8b25-2b2a9d1ea4e8 "Geschäftsführung 1")
 
-Auf dieser Seite werden die grafische und tabellarische Übersicht der Fahrten angezeigt. Durch die Auswahl des Zeitraumes (Felder des Datums von und bis), der Auswahl ob die Ergebnisse nach Monate oder Jahre angezeigt werden sollen und die Auswahl der Kategorien, können die Ergebnisse angezeigt werden. Somit kann eine Übersicht erlangt werden wieviele Kilometer je Kategorie in einem bestimmten Zeitraum zurückgelegt wurden.
+Auf dieser Seite wird die grafische Übersicht der Fahrten angezeigt. Durch die Auswahl des Zeitraumes (Felder des Datums von und bis), der Auswahl ob die Ergebnisse nach Monate oder Jahre angezeigt werden sollen und die Auswahl der Kategorien, können die Ergebnisse angezeigt werden. Somit kann eine Übersicht erlangt werden wieviele Kilometer je Kategorie in einem bestimmten Zeitraum zurückgelegt wurden.
 Szenario: Die Geschäftsführung möchte wissen wieviele Kilometer Für Reparaturen im letzten Jahr gefahren wurden und wählen die Monatsansicht, um eine Gliederung pro Monat einsehen zu können.
 
 ## Beispiel

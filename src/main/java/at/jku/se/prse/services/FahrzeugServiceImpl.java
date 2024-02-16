@@ -27,4 +27,8 @@ public class FahrzeugServiceImpl implements FahrzeugService{
     public void delete(Fahrzeug fz) {
         repository.delete(fz);
     }
+
+    public Fahrzeug findByCarPlate(String carPlate) {
+        return repository.findByCarPlate(carPlate);
+    }
 }

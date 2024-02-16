@@ -11,4 +11,6 @@ public interface FahrzeugService {
     List<Fahrzeug> findAll();
 
     void delete(Fahrzeug fz);
+
+    Fahrzeug findByCarPlate(String carPlate);
 }

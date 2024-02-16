@@ -19,12 +19,17 @@ public class KategorieServiceImpl implements KategorieService{
     }
 
     @Override
-    public void save(Kategorie k) {
-        katRepo.save(k);
+    public Kategorie save(Kategorie k) {
+        return katRepo.save(k);
     }
 
     @Override
     public List<Kategorie> findAll() {
         return katRepo.findAll();
+    }
+
+    @Override
+    public Kategorie findByName(String name) {
+        return katRepo.findByName(name);
     }
 }

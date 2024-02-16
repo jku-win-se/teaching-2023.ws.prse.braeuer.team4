@@ -1,30 +1,39 @@
 package at.jku.se.prse.services;
 
+import at.jku.se.prse.customadapters.LocalDateTypeAdapter;
+import at.jku.se.prse.customadapters.LocalTimeTypeAdapter;
 import at.jku.se.prse.model.Fahrt;
 import at.jku.se.prse.model.Fahrzeug;
 import at.jku.se.prse.model.Kategorie;
 import com.dropbox.core.DbxException;
 import com.dropbox.core.v2.DbxClientV2;
 import com.dropbox.core.v2.files.Metadata;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonWriter;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.time.LocalTime;
+import java.util.*;
 
 @Service
 public class ImportExportServiceImpl implements ImportExportService{
@@ -68,13 +77,18 @@ public class ImportExportServiceImpl implements ImportExportService{
     }};
 
     @Override
-    public void exportDataToCloud() throws IOException, DbxException {
-        uploadFile(createBosFromData(), "/FahrtenbuchApp/output_" + LocalDateTime.now() + ".xlsx");
+    public void exportDataToCloudXLSX() throws IOException, DbxException {
+        uploadFile(createBosFromDataXLSX(), "/FahrtenbuchApp/output_" + LocalDateTime.now() + ".xlsx");
     }
 
     @Override
-    public StreamedContent exportDataAsStreamedContent() {
-        ByteArrayOutputStream bos = createBosFromData();
+    public void exportDataToCloudJSON() throws IOException, DbxException {
+        uploadFile(createBosFromDataJSON(), "/FahrtenbuchApp/output_" + LocalDateTime.now() + ".json");
+    }
+
+    @Override
+    public StreamedContent exportDataAsStreamedContentXLSX() {
+        ByteArrayOutputStream bos = createBosFromDataXLSX();
 
         return DefaultStreamedContent.builder()
                 .stream(() -> new ByteArrayInputStream(bos.toByteArray()))
@@ -83,7 +97,70 @@ public class ImportExportServiceImpl implements ImportExportService{
                 .build();
     }
 
-    private ByteArrayOutputStream createBosFromData(){
+    @Override
+    public StreamedContent exportDataAsStreamedContentJSON() throws IOException {
+        ByteArrayOutputStream bos = createBosFromDataJSON();
+
+        return DefaultStreamedContent.builder()
+                .stream(() -> {
+                    assert bos != null;
+                    return new ByteArrayInputStream(bos.toByteArray());
+                })
+                .contentEncoding(String.valueOf(MediaType.APPLICATION_JSON))
+                .name("output.json")
+                .build();
+    }
+
+    @Override
+    public void handleFileUpload(FileUploadEvent event) throws IOException {
+        JsonReader reader = new JsonReader(new InputStreamReader(event.getFile().getInputStream()));
+        Type listOfMyClassObject = new TypeToken<ArrayList<Fahrt>>() {}.getType();
+
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
+                .registerTypeAdapter(LocalTime.class, new LocalTimeTypeAdapter())
+                .serializeNulls()
+                .setPrettyPrinting().create();
+
+        List<Fahrt> outputList = gson.fromJson(reader, listOfMyClassObject);
+
+        for(Fahrt f : outputList) {
+            //Set Fahrzeug correctly
+            if(!fahrzeugService.findAll().stream().anyMatch(fz -> fz.getCarPlate().equalsIgnoreCase(f.getFahrzeug().getCarPlate()))) f.setFahrzeug(fahrzeugService.save(f.getFahrzeug()));
+            else f.setFahrzeug(fahrzeugService.findByCarPlate(f.getFahrzeug().getCarPlate()));
+
+            //Set Cats correctly
+            Set<Kategorie> cats = new HashSet<>();
+            for(Kategorie k : f.getCategories()) {
+                if(!katService.findAll().stream().anyMatch(kat -> kat.getName().equalsIgnoreCase(k.getName()))) cats.add(katService.save(k));
+                else cats.add(katService.findByName(k.getName()));
+            }
+
+            f.setCategories(cats);
+
+            //save Fahrt - contains is not 100% correct yet
+            if(!fahrtService.findAll().contains(f)) {
+                fahrtService.save(f);
+            }
+        }
+    }
+
+    private ByteArrayOutputStream createBosFromDataJSON() throws IOException {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        JsonWriter writer = new JsonWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
+        Gson gson = new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class, new LocalDateTypeAdapter())
+                .registerTypeAdapter(LocalTime.class, new LocalTimeTypeAdapter())
+                .serializeNulls()
+                .setPrettyPrinting().create();
+        gson.toJson(fahrtService.findAll(), List.class, writer);
+
+        writer.flush();
+        writer.close();
+        return out;
+    }
+
+    private ByteArrayOutputStream createBosFromDataXLSX(){
         XSSFWorkbook wb = new XSSFWorkbook();
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
 

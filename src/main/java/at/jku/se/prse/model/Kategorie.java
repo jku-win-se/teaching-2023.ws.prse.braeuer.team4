@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -22,11 +20,6 @@ public class Kategorie {
     @Setter
     @Column(unique = true, length = 50)
     private String name;
-
-    @Getter
-    @Setter
-    @ManyToMany(mappedBy="categories", fetch = FetchType.EAGER)
-    Set<Fahrt> fahrten = new HashSet<>();
 
     @Override
     public boolean equals(Object o) {

@@ -16,6 +16,7 @@ import jakarta.faces.application.FacesMessage;
 import jakarta.faces.context.FacesContext;
 import lombok.Getter;
 import lombok.Setter;
+import org.primefaces.event.FileUploadEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.model.StreamedContent;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -185,7 +186,7 @@ public class AdministrationView {
     }
 
     public void deleteKategorie(Kategorie kat) {
-        if (kat.getFahrten().isEmpty()) {
+        if (!fahrtService.findAll().stream().anyMatch(f -> f.getCategories().contains(kat))) {
             kategorieService.delete(kat);
             initKategorien();
             FacesMessage msg = new FacesMessage("Kategorie gelöscht", "Kategorie " + kat.getName() + " gelöscht.");
@@ -222,17 +223,26 @@ public class AdministrationView {
         return newFahrt.getAverageSpeed();
     }
 
-    public StreamedContent exportData() throws InvocationTargetException, IllegalAccessException {
-        return impExpService.exportDataAsStreamedContent();
+    public StreamedContent exportDataXLSX() throws InvocationTargetException, IllegalAccessException {
+        return impExpService.exportDataAsStreamedContentXLSX();
     }
 
-    public void exportDataToCloud() throws IOException, DbxException {
-        impExpService.exportDataToCloud();
-        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Backup erfolgreich", "Daten wurden auf Dropbox hochgeladen"));
+    public void exportDataToCloudXLSX() throws IOException, DbxException {
+        impExpService.exportDataToCloudXLSX();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Backup erfolgreich", "Daten wurden als XLSX auf Dropbox hochgeladen"));
+    }
+
+    public StreamedContent exportDataJSON() throws IOException {
+        return impExpService.exportDataAsStreamedContentJSON();
+    }
+
+    public void exportDataToCloudJSON() throws IOException, DbxException {
+        impExpService.exportDataToCloudJSON();
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Backup erfolgreich", "Daten wurden als JSON auf Dropbox hochgeladen"));
     }
 
     public void onRowEditFz(RowEditEvent<Fahrzeug> event) {
-        if(fahrzeugService.findAll().stream().anyMatch(f -> f.getCarPlate().equalsIgnoreCase(event.getObject().getCarPlate()))) {
+        if(fahrzeugService.findAll().stream().anyMatch(f -> f.getCarPlate() != null && f.getCarPlate().equalsIgnoreCase(event.getObject().getCarPlate()))) {
             FacesContext.getCurrentInstance().addMessage(null,  new FacesMessage(FacesMessage.SEVERITY_ERROR, "Bearbeiten fehlgeschlagen", "Fahrzeug " + event.getObject().getCarPlate() + " existiert bereits"));
         } else {
             fahrzeugService.save(event.getObject());
@@ -261,5 +271,12 @@ public class AdministrationView {
             FacesMessage msg = new FacesMessage("Fahrzeug gelöscht", "Fahrzeug " + fz.getCarPlate() + " gelöscht.");
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
+    }
+
+    public void handleFileUpload(FileUploadEvent event) throws IOException {
+        impExpService.handleFileUpload(event);
+        FacesMessage msg = new FacesMessage("Import erfolgreich", "Inhalt der Datei " + event.getFile().getFileName() + " erfolgreich importiert.");
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        initAll();
     }
 }

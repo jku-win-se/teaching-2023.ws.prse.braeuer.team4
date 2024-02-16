@@ -4,9 +4,37 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui">
 
-    <p:megaMenu orientation="horizontal">
+    <p:megaMenu orientation="horizontal" autoDisplay="false">
         <p:menuitem outcome="index" value="Administration" icon="pi pi-home"/>
         <p:menuitem outcome="analytics" value="Geschäftsführung" icon="pi pi-chart-line"/>
+        <p:submenu label="Export/Import" icon="pi pi-database" expanded="true">
+            <p:column>
+                <p:submenu label="Download">
+                    <p:menuitem value="Export XLSX">
+                        <p:fileDownload value="#{administrationView.exportDataXLSX()}" icon="pi pi-file-excel"/>
+                    </p:menuitem>
+                    <p:menuitem value="Export JSON">
+                        <p:fileDownload value="#{administrationView.exportDataJSON()}" icon="pi pi-file"/>
+                    </p:menuitem>
+                </p:submenu>
+            </p:column>
+            <p:column>
+                <p:submenu label="Cloud-Export">
+                    <p:menuitem value="Export XLSX Cloud" action="#{administrationView.exportDataToCloudXLSX()}" icon="pi pi-cloud-upload"/>
+                    <p:menuitem value="Export JSON Cloud" action="#{administrationView.exportDataToCloudJSON()}" icon="pi pi-cloud-upload"/>
+                </p:submenu>
+            </p:column>
+            <p:column>
+                <p:submenu label="Daten-Import JSON">
+                    <p:menuitem onclick="PF('fileUploadDialogue').show()" value="Import" icon="pi pipi-upload"/>
+                </p:submenu>
+            </p:column>
+        </p:submenu>
     </p:megaMenu>
-
+    <p:dialog id="fileUploadDialogue" widgetVar="fileUploadDialogue" header="Datei-Upload" closable="true" resizable="true" modal="true" width="600" height="200">
+        <h:form>
+            <p:growl id="messages" showDetail="true"/>
+            <p:fileUpload multiple="false" mode="advanced" update="@all" dragDropSupport="true" listener="#{administrationView.handleFileUpload}"/>
+        </h:form>
+    </p:dialog>
 </ui:composition>

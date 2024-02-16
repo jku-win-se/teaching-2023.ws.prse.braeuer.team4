@@ -11,7 +11,7 @@
                 <h:form id="form">
                     <p:growl id="msgs" showDetail="true" sticky="true"/>
 
-                    <p:dataTable id="fahrten" var="fahrt" value="#{administrationView.fahrten}" editable="true" style="margin-bottom:20px" lazy="false">
+                    <p:dataTable id="fahrten" var="fahrt" value="#{administrationView.fahrten}" editable="true" style="margin-bottom:20px" lazy="false" scrollHeight="1000" scrollable="true">
                         <p:ajax event="rowEdit" listener="#{administrationView.rowEditFahrt}" update=":form:msgs"/>
                         <p:ajax event="rowEditCancel" listener="#{administrationView.rowCancelFahrt}" update=":form:msgs"/>
 

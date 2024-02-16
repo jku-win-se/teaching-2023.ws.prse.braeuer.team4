@@ -7,9 +7,9 @@
 
     <ui:define name="content">
         <f:view locale="DE">
-            <p:panel id="kmProSth" header="Analytics (Geschäftsführung)">
+            <p:panel id="kmProSth" header="Analytics Grafisch">
                 <h:form id="form">
-                    <p:commandButton action="#{analyticsView.reload()}" update="kmProSth" process="@form" styleClass="ui-priority-primary" icon="pi pi-refresh"/>
+                    <p:commandButton action="#{analyticsView.reload()}" update="@all" process="@all" styleClass="ui-priority-primary" icon="pi pi-refresh"/>
 
                     <p:datePicker title="Anfang" view="month" pattern="MM.yyyy" value="#{analyticsView.beginning}" yearNavigator="true" />
                     <p:datePicker title="Anfang" view="month" pattern="MM.yyyy" value="#{analyticsView.end}" yearNavigator="true"/>
@@ -29,6 +29,26 @@
                         <p:lineChart id="chartline" model="#{analyticsView.lineModel}" style="height: 50%;" />
                     </p:panel>
                 </h:form>
+            </p:panel>
+            <p:panel id="Tabellen" header="Analytics Tabellarisch">
+                <p:panelGrid columns="2">
+                <p:dataTable id="monat" var="mon" value="#{analyticsView.monatDTOS}" editable="true" style="margin-bottom:20px" lazy="false" scrollHeight="500" scrollable="true">
+                    <p:column headerText="Monat">
+                        <p:outputLabel value="#{mon.name}"/>
+                    </p:column>
+                    <p:column headerText="Kilometer">
+                        <p:outputLabel value="#{mon.val}"/>
+                    </p:column>
+                </p:dataTable>
+                <p:dataTable id="jahr" var="jahr" value="#{analyticsView.jahrDTOS}" editable="true" style="margin-bottom:20px" lazy="false" scrollHeight="500" scrollable="true">
+                    <p:column headerText="Jahr">
+                        <p:outputLabel value="#{jahr.jahr}"/>
+                    </p:column>
+                    <p:column headerText="Kilometer">
+                        <p:outputLabel value="#{jahr.val}"/>
+                    </p:column>
+                </p:dataTable>
+                </p:panelGrid>
             </p:panel>
         </f:view>
     </ui:define>

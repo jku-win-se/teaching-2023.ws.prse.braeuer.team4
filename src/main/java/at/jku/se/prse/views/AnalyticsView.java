@@ -1,5 +1,7 @@
 package at.jku.se.prse.views;
 
+import at.jku.se.prse.dto.JahrDTO;
+import at.jku.se.prse.dto.MonatDTO;
 import at.jku.se.prse.model.Fahrt;
 import at.jku.se.prse.model.Kategorie;
 import at.jku.se.prse.services.FahrtService;
@@ -59,6 +61,12 @@ public class AnalyticsView {
     @Getter
     @Setter
     Set<Kategorie> choiceKats;
+    @Getter
+    @Setter
+    List<MonatDTO> monatDTOS = new ArrayList<>();
+    @Getter
+    @Setter
+    List<JahrDTO> jahrDTOS = new ArrayList<>();
 
     private static final String RESPONSIVE_CLASS = "col-12 lg:col-6 xl:col-6";
 
@@ -71,6 +79,7 @@ public class AnalyticsView {
         initSelections();
         initFahrten();
         initChart();
+        initTableCont();
         responsiveModel = new DefaultDashboardModel();
         responsiveModel.addWidget(new DefaultDashboardWidget("kmPerYear", RESPONSIVE_CLASS));
     }
@@ -86,6 +95,7 @@ public class AnalyticsView {
         initFahrten();
         initKategorien();
         initChart();
+        initTableCont();
 
         addMessage(new FacesMessage("Grafik neu geladen"));
     }
@@ -101,6 +111,43 @@ public class AnalyticsView {
         lineModel = new LineChartModel();
         lineModel.setOptions(initOptions());
         lineModel.setData(initData());
+    }
+
+    public void initTableCont() {
+        monatDTOS.clear();
+        jahrDTOS.clear();
+        LocalDate start = beginning;
+        while (!start.isAfter(end)) {
+            Month month = start.getMonth();
+            int year = start.getYear();
+            int km = fahrten.stream()
+                    .filter(f -> f.getDate().getMonth().compareTo(month) == 0)
+                    .filter(f -> f.getDate().getYear() == year)
+                    .filter(f -> {
+                        if(choiceKats.isEmpty()) return true;
+                        for (Kategorie k : choiceKats) {
+                            if(f.getCategories().contains(k)) return true;
+                        }
+                        return false;
+                    }).mapToInt(Fahrt::getRiddenKM).sum();
+            monatDTOS.add(new MonatDTO(month.getDisplayName(TextStyle.FULL, Locale.GERMAN), km));
+                start = start.plusMonths(1);
+        }
+        start = beginning;
+        while (start.getYear() <= end.getYear()) {
+                int year = start.getYear();
+                int km = fahrten.stream()
+                        .filter(f -> f.getDate().getYear() == year)
+                        .filter(f -> {
+                            if(choiceKats.isEmpty()) return true;
+                            for (Kategorie k : choiceKats) {
+                                if(f.getCategories().contains(k)) return true;
+                            }
+                            return false;
+                        }).mapToInt(Fahrt::getRiddenKM).sum();
+                jahrDTOS.add(new JahrDTO(year, km));
+                start = start.plusYears(1);
+            }
     }
 
     private LineChartOptions initOptions() {
@@ -152,10 +199,6 @@ public class AnalyticsView {
                         fahrten.stream()
                                 .filter(f -> f.getDate().getMonth().compareTo(month) == 0)
                                 .filter(f -> f.getDate().getYear() == year)
-                                .filter(f ->  {
-                                    if(choiceKats.isEmpty()) return true;
-                                    return true;
-                                })
                                 .filter(f -> {
                                     if(choiceKats.isEmpty()) return true;
                                     for (Kategorie k : choiceKats) {
